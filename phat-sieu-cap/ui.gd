@@ -32,6 +32,8 @@ func _ready():
 
 	var p_btn = Button.new()
 	p_btn.text = "||"
+	p_btn.tooltip_text = "Tạm dừng"
+	p_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	p_btn.add_theme_font_size_override("font_size", 24)
 	p_btn.custom_minimum_size = Vector2(50, 50)
 	p_btn.set_anchors_preset(Control.PRESET_TOP_RIGHT)
@@ -405,6 +407,7 @@ func show_levelup_options():
 
 		var btn = Button.new()
 		btn.custom_minimum_size = Vector2(220, 320)
+		btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
 		var card_style = StyleBoxFlat.new()
 		card_style.bg_color = Color(0.1, 0.1, 0.15, 0.9)
