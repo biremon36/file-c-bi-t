@@ -593,14 +593,15 @@ func shoot_nearest_enemy():
 	var enemies = GlobalUtils.get_group(self, "enemies")
 	if enemies.size() > 0:
 		var nearest = null
-		var min_dist = INF
+		var min_dist_sq = INF
+		var total_range = attack_range + bullet_range
+		var total_range_sq = total_range * total_range
 
 		for enemy in enemies:
-			var total_range = attack_range + bullet_range
-			var dist = global_position.distance_to(enemy.global_position)
-			if dist < min_dist and dist <= total_range:
+			var dist_sq = global_position.distance_squared_to(enemy.global_position)
+			if dist_sq < min_dist_sq and dist_sq <= total_range_sq:
 				nearest = enemy
-				min_dist = dist
+				min_dist_sq = dist_sq
 
 		if nearest == null:
 			return
@@ -672,13 +673,14 @@ func fire_burst(count, target):
 func find_nearest_enemy():
 	var enemies = GlobalUtils.get_group(self, "enemies")
 	var nearest = null
-	var min_dist = INF
+	var min_dist_sq = INF
+	var total_range = attack_range + bullet_range
+	var total_range_sq = total_range * total_range
 	for enemy in enemies:
-		var total_range = attack_range + bullet_range
-		var dist = global_position.distance_to(enemy.global_position)
-		if dist < min_dist and dist <= total_range:
+		var dist_sq = global_position.distance_squared_to(enemy.global_position)
+		if dist_sq < min_dist_sq and dist_sq <= total_range_sq:
 			nearest = enemy
-			min_dist = dist
+			min_dist_sq = dist_sq
 	return nearest
 
 func gain_xp(amount):

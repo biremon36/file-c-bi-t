@@ -1,0 +1,3 @@
+## 2024-04-17 - Optimize distance calculations in loops and physics process
+**Learning:** Vampire Survivor-like games in Godot can suffer from performance bottlenecks when calculating `distance_to()` in `_physics_process` for every enemy (which runs every frame) or inside loops over all enemies. Godot's `distance_to` uses a square root operation which is computationally expensive.
+**Action:** Replaced `distance_to` with `distance_squared_to` and compared against squared thresholds in `enemy.gd`'s collision checks and `player.gd`'s nearest enemy searches. Additionally, hoisted constant variable calculations out of the loops in `player.gd`.

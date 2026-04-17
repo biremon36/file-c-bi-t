@@ -128,15 +128,15 @@ func _physics_process(delta):
 			if $Sprite2D: $Sprite2D.flip_h = velocity.x > 0
 
 		# Check distance for damage (Hitbox logic - Player)
-		var dist = global_position.distance_to(player.global_position)
-		if dist < 40: # Approx radius overlap
+		var dist_sq = global_position.distance_squared_to(player.global_position)
+		if dist_sq < 1600: # Approx radius overlap squared (40*40)
 			if player.has_method("take_damage"):
 				player.take_damage(damage * delta)
 
 		# Check distance for damage (Rika)
 		var rikas = GlobalUtils.get_group(self, "rika")
 		for r in rikas:
-			if global_position.distance_to(r.global_position) < 40:
+			if global_position.distance_squared_to(r.global_position) < 1600:
 				if r.has_method("take_damage"):
 					r.take_damage(damage * delta)
 
