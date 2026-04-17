@@ -38,6 +38,7 @@ var dashes_per_attack = 1 # Standard 1, increases per level
 var warning_line = null # Line2D node
 var current_dash_target = Vector2.ZERO
 var current_dash_start = Vector2.ZERO
+var active_dash_tween: Tween = null
 
 func _ready():
 	add_to_group("enemies")
@@ -147,12 +148,8 @@ func start_stun():
 	stun_label.visible = true
 
 	# KILL TWEENS to stop Dashing immediately
-	var tween_killer = create_tween()
-	tween_killer.kill() # Dummy to access specific kill? No, use get_tree().create_tween().kill()?
-	# Correct way to stop specific tween on self:
-	# Keep track of active tween OR just overwrite state so finish_dash checks it.
-	# But physics update might move him.
-	# Let's rely on state check in finish_dash.
+	if active_dash_tween:
+		active_dash_tween.kill()
 
 func _physics_process(delta):
 	# Update Stun
@@ -382,9 +379,12 @@ func execute_dash():
 	attack_state = "DASHING"
 	check_hit_player()
 
-	var tween = create_tween()
-	tween.tween_property(self, "global_position", current_dash_target, 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
-	tween.tween_callback(finish_dash)
+	if active_dash_tween:
+		active_dash_tween.kill()
+
+	active_dash_tween = create_tween()
+	active_dash_tween.tween_property(self, "global_position", current_dash_target, 0.2).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+	active_dash_tween.tween_callback(finish_dash)
 
 func reset_to_idle():
 	attack_state = "IDLE"
